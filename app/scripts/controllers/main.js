@@ -7,36 +7,35 @@ angular.module('tictacAngularApp')
   		var promise = angularFire(url, $scope, "ticTacToe");
     // Controller for win condition
 		promise.then(function(){
+
 			console.log("entering 10");
-			$scope.ticTacToe=[['','',''], 
-						['','',''], 
-						['','','']];
-			// $scope.ticTacToe=[[{value: ""}, {value: ""}, {value: ""}], 
-			// 			[{value: ""}, {value: ""}, {value: ""}], 
-			// 			[{value: ""}, {value: ""}, {value: ""}]];
 
+			$scope.ticTacToe=[[{value: '', turn: ''},{value: '', turn: ''},{value: '', turn: ''}], 
+							  [{value: '', turn: ''},{value: '', turn: ''},{value: '', turn: ''}], 
+						      [{value: '', turn: ''},{value: '', turn: ''},{value: '', turn: ''}]];
+	
 			$scope.classes = ['X', 'O'];
-			$scope.counter={value: 0};
-			
-
+			$scope.counter={value: 0};	
 			$scope.checkWin = function(row, column, holder){ 
-			// Make the X's and O's alternate
 				console.log("entering alternating code")
+			// Make the X's and O's alternate
 				$scope.counter.value += 1;
-				holder = $scope.classes[$scope.counter.value%2]
-				console.log("alternating works")
+				holder.turn = $scope.counter.value;
+				holder.value = $scope.classes[$scope.counter.value%2];
+				console.log("alternating works");
+				// $scope.ticTacToe[row][column].turn = holder.value;
+
 			// Win condition
-				$scope.ticTacToe[row][column] = holder;
 				console.log("entering win condition code")
 				for(var x=0;x<=2;x+=1){
-					if(this.ticTacToe[x][0] == this.ticTacToe[x][1] &&
-					this.ticTacToe[x][1] == this.ticTacToe[x][2] && 
-					this.ticTacToe[x][1] !== ""){
+					if(this.ticTacToe[x][0].value == this.ticTacToe[x][1].value &&
+					this.ticTacToe[x][1].value == this.ticTacToe[x][2].value && 
+					this.ticTacToe[x][1].value !== ""){
 					document.getElementById("popup").style.display="block";}
 				
-					if(this.ticTacToe[0][x] == this.ticTacToe[1][x] &&
-					this.ticTacToe[1][x] == this.ticTacToe[2][x] && 
-					this.ticTacToe[1][x] !== ""){
+					if(this.ticTacToe[0][x].value == this.ticTacToe[1][x].value &&
+					this.ticTacToe[1][x].value == this.ticTacToe[2][x].value && 
+					this.ticTacToe[1][x].value !== ""){
 					document.getElementById("popup").style.display="block";}
 				console.log("win condition code executes")
 				// alert(ticTacToe[0]{{x}} + " won in column " +( (x==)
