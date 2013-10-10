@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('tictacAngularApp', ["firebase"])
+angular.module('tictacAngularApp', ['firebase'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
