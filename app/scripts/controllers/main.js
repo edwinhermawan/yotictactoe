@@ -3,39 +3,42 @@
 angular.module('tictacAngularApp')
   .controller('MainCtrl', ['$scope', 'angularFire', function($scope, angularFire){
   		// Get Firebase fired up
-  		var url = new Firebase("https://tictacPLEASEWORK.firebaseio.com/");
-  		
+  		$scope.ticTacToe = [];
+  		$scope.queue = {};
+
+		var queueUrl = new Firebase("https://tictacPLEASEWORK.firebaseio.com/queue");
   		// Initialize and link Firebase to queue
-  		var promise = angularFire(url, $scope, "queue", []);
+  		angularFire(queueUrl, $scope, "queue").then( function(){ 
+  			if($scope.queue.gameId == undefined){
+  				console.log("$scope.queue.gameId is " + $scope.queue.gameId)
+  				$scope.player = 1
+  				console.log("this is player" + $scope.player)
+  				var newGame ={
+  					board: [[{value: '', turn: ''},{value: '', turn: ''},{value: '', turn: ''}], 
+							   [{value: '', turn: ''},{value: '', turn: ''},{value: '', turn: ''}], 
+						       [{value: '', turn: ''},{value: '', turn: ''},{value: '', turn: ''}]]
+
+  				}
+
+  				$scope.gameId = $scope.ticTacToe.push(newGame) - 1
+  				$scope.queue.gameId = $scope.gameId
+  			}
+  			else{
+  				// Designate the player as Player 2
+  				$scope.player = 2
+  				console.log("this is player" + $scope.player)
+  				// Designate which game it's in
+  				$scope.gameId = $scope.queue.gameId
+				// clear out the queue
+  				$scope.queue = {}
+  			}
+  		
   		// on entry, push an item into the queue array
   			// onload add someone to the queue
-  		promise.then(function(){
-  			$scope.queue.push({
-  				player1: true,
-  				player2: false,
-  			});
-  			console.log($scope.queue.length);
-  			console.log("at line 20")
-  		});
-  		
-  		// if (scope.queue.length%3 = 1){
-		// 	put in waiting  
-  		// }
-		// else if (scope.queue.length%3 = 2){
-		// 	enter game
-		// }
-		// else if (scope.queue.length%3 =0 ){
-		// 	start new game
-		// }
-
   		// Initialize and link ticTacToe to board
-  		$scope.ticTacToe = [];
-  		var promise = angularFire(url, $scope, "ticTacToe", []);
+  		var ticTacUrl = new Firebase("https://tictacPLEASEWORK.firebaseio.com/ticTacToe");
+  			angularFire(ticTacUrl, $scope, "ticTacToe", []).then(function(){;
     // Controller for win condition
-		promise.then(function(){
-
-			console.log("entering 10");
-			
 			$scope.ticTacToe=[[{value: '', turn: ''},{value: '', turn: ''},{value: '', turn: ''}], 
 							  [{value: '', turn: ''},{value: '', turn: ''},{value: '', turn: ''}], 
 						      [{value: '', turn: ''},{value: '', turn: ''},{value: '', turn: ''}]];
@@ -77,5 +80,5 @@ angular.module('tictacAngularApp')
 			// console.log( $scope.ticTacToe.onDisconnect().remove())
 			};
 		});
-	}]);
-
+	});
+}])
