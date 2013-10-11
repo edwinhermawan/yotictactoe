@@ -23,7 +23,8 @@ angular.module('tictacAngularApp')
 	  				var newGame = {
 	  					board: [[{value: '', turn: ''},{value: '', turn: ''},{value: '', turn: ''}], 
 								[{value: '', turn: ''},{value: '', turn: ''},{value: '', turn: ''}], 
-							    [{value: '', turn: ''},{value: '', turn: ''},{value: '', turn: ''}]]
+							    [{value: '', turn: ''},{value: '', turn: ''},{value: '', turn: ''}]], 
+						win: false
 	  				};
 	  				$scope.gameId = $scope.games.push(newGame) - 1;
 	  				console.log("This is $scope.games " + $scope.games)
@@ -40,6 +41,7 @@ angular.module('tictacAngularApp')
 	  				$scope.gameId = $scope.queue.gameId;
 	  				console.log($scope.games)
 	  				console.log("We are in gameId " + $scope.gameId)
+						
 					// Clear out the queue
 	  				$scope.queue = {};
 	  			}
@@ -61,15 +63,17 @@ angular.module('tictacAngularApp')
 			// Win condition
 				console.log("entering win condition code")
 				for(var x=0;x<=2;x+=1){
-					if($scope.games[gameId][x][0].value == $scope.games[gameId][x][1].value &&
-					$scope.games[gameId][x][1].value == $scope.games[gameId][x][2].value && 
-					$scope.games[gameId][x][1].value !== ""){
-					document.getElementById("popup").style.display="block";}
+					if($scope.games[$scope.gameId].board[x][0].value == $scope.games[$scope.gameId].board[x][1].value &&
+					$scope.games[$scope.gameId].board[x][1].value == $scope.games[$scope.gameId].board[x][2].value && 
+					$scope.games[$scope.gameId].board[x][1].value !== ""){
+					$scope.games[$scope.gameId].win=true;
+					}
 				
-					if($scope.games[gameId][0][x].value == $scope.games[gameId][1][x].value &&
-					$scope.games[gameId][1][x].value == $scope.games[gameId][2][x].value && 
-					$scope.games[gameId][1][x].value !== ""){
-					document.getElementById("popup").style.display="block";}
+					if($scope.games[$scope.gameId].board[0][x].value == $scope.games[$scope.gameId].board[1][x].value &&
+					$scope.games[$scope.gameId].board[1][x].value == $scope.games[$scope.gameId].board[2][x].value && 
+					$scope.games[$scope.gameId].board[1][x].value !== ""){
+					$scope.games[$scope.gameId].win=true;
+					}
 					console.log("win condition code executes")
 			
 				// if((row==x,column==0) == (row==x,column==1}}) &&
@@ -79,6 +83,9 @@ angular.module('tictacAngularApp')
 				// };
 				};
 			};
+
+			$scope.$watch('games[$scope.gameId].win', function(){
+				document.getElementById("popup").style.display="block"})
 		});
 });
 }
