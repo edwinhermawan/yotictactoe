@@ -1,0 +1,20 @@
+<div id="container">
+
+<!-- put in grid -->
+	<div ng-repeat="row in games[gameId].board">
+
+		<!-- put in X's and O's -->
+
+		<div ng-repeat="cell in row" ng-click="checkWin($parent.$index, $index, cell)" ng-class="{sqr:true, topline:$parent.$index != 0, leftLine:$index != 0}">
+
+			{{cell.value}}
+
+		</div>
+		<div class="clearfix"></div>
+
+	</div>
+</div>
+
+<!-- Winner popup -->
+ <div id="popup">You Won!<button type="button" onclick="reset_board()">Reset!</button>
+ </div>
