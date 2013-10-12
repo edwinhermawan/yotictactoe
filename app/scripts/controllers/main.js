@@ -24,7 +24,9 @@ angular.module('tictacAngularApp')
 	  					board: [[{value: '', turn: ''},{value: '', turn: ''},{value: '', turn: ''}], 
 								[{value: '', turn: ''},{value: '', turn: ''},{value: '', turn: ''}], 
 							    [{value: '', turn: ''},{value: '', turn: ''},{value: '', turn: ''}]], 
-						win: false
+						classes: ['X', 'O'],
+						counter: {value: 0}, 
+						win: false, 
 	  				};
 	  				$scope.gameId = $scope.games.push(newGame) - 1;
 	  				console.log("This is $scope.games " + $scope.games)
@@ -39,24 +41,23 @@ angular.module('tictacAngularApp')
 	  				console.log("This is player " + $scope.player);
 	  				// Designate which game it's in
 	  				$scope.gameId = $scope.queue.gameId;
-	  				console.log($scope.games)
-	  				console.log("We are in gameId " + $scope.gameId)
-						
+	  				console.log($scope.games);
+	  				console.log("We are in gameId " + $scope.gameId);
+
 					// Clear out the queue
 	  				$scope.queue = {};
 	  			}
   			
-			$scope.classes = ['X', 'O'];
-			$scope.counter={value: 0};	
+			
 
 			console.log("Got to $scope.counter")
 
 			$scope.checkWin = function(row, column, holder){ 
 				console.log("entering alternating code");
 			// Make the X's and O's alternate
-				$scope.counter.value += 1;
-				holder.turn = $scope.counter.value;
-				holder.value = $scope.classes[$scope.counter.value%2];
+				$scope.games[$scope.gameId].counter.value += 1;
+				holder.turn = $scope.games[$scope.gameId].counter.value;
+				holder.value = $scope.games[$scope.gameId].classes[$scope.games[$scope.gameId].counter.value%2];
 				console.log("alternating works");
 				// $scope.ticTacToe[row][column].turn = holder.value;
 
@@ -66,13 +67,14 @@ angular.module('tictacAngularApp')
 					if($scope.games[$scope.gameId].board[x][0].value == $scope.games[$scope.gameId].board[x][1].value &&
 					$scope.games[$scope.gameId].board[x][1].value == $scope.games[$scope.gameId].board[x][2].value && 
 					$scope.games[$scope.gameId].board[x][1].value !== ""){
-					$scope.games[$scope.gameId].win=true;
+					$scope.games[$scope.gameId].win = true;
+					console.log("Did you win?" + $scope.games[$scope.gameId].win);
 					}
 				
 					if($scope.games[$scope.gameId].board[0][x].value == $scope.games[$scope.gameId].board[1][x].value &&
 					$scope.games[$scope.gameId].board[1][x].value == $scope.games[$scope.gameId].board[2][x].value && 
 					$scope.games[$scope.gameId].board[1][x].value !== ""){
-					$scope.games[$scope.gameId].win=true;
+					$scope.games[$scope.gameId].win = true;
 					}
 					console.log("win condition code executes")
 			
@@ -83,9 +85,6 @@ angular.module('tictacAngularApp')
 				// };
 				};
 			};
-
-			$scope.$watch('games[$scope.gameId].win', function(){
-				document.getElementById("popup").style.display="block"})
 		});
 });
 }

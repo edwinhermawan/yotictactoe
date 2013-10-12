@@ -19,5 +19,5 @@
 </div>
 
 <!-- Winner popup -->
- <div id="popup">You Won!<button type="button" onclick="reset_board()">Reset!</button>
+ <div id="popup" ng-show="games[gameId].win">You Won!<button type="button" onclick="reset_board()">Reset!</button>
  </div>
